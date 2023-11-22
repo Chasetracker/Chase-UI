@@ -61,7 +61,7 @@ const Login: React.FC<FormProps> = () => {
         // }
     };
     return (
-        <div className='flex flex-col w-full justify-center min-h-screen items-center'>
+        <div className='flex flex-col w-full justify-center min-h-screen items-center pb-10'>
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[100px] bg-white fixed z-[99999] top-0 shadow-md'>
                 <Link href='#' className='flex h-[50px] justify-center items-center space-x-2 '>
                     <div className='relative w-[45px] h-[45px]'>
@@ -74,7 +74,7 @@ const Login: React.FC<FormProps> = () => {
                     <Button btnValue='Sign Up' className='text-[white] bg-primary h-[45px] w-[100px] rounded-lg  hover:border-[1px] hover:bg-[#da7359]' />
                 </div>
             </nav>
-            <div className='flex w-[450px] flex-col h-[500px] justify-center items-center mt-10'>
+            <div className='flex w-[450px] flex-col h-[500px] justify-center items-center mt-16'>
                 <form action="" onSubmit={onSubmit} className={`space-y-3 w-full p-10`}>
                     <h1 className='text-xl font-extrabold flex justify-center items-center'>Log in to your account</h1>
                     <h2 className='text-base font-extralight flex justify-center items-center'>Welcome back! Please enter your details.</h2>
