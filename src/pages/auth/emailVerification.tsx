@@ -1,4 +1,5 @@
 import Button from '@/components/Button/Button'
+import OTPInput from '@/components/Otp Layout/OtpLayout';
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, ChangeEvent } from 'react';
@@ -8,6 +9,7 @@ interface OTPInputProps {
 
 
 const EmailVerification: React.FC<OTPInputProps> = () => {
+
 
 
     const onSubmit = async (event: { preventDefault: () => void }) => {
@@ -30,26 +32,7 @@ const EmailVerification: React.FC<OTPInputProps> = () => {
         // }
     };
 
-    const [otp, setOtp] = useState(new Array(length).fill(''));
 
-    const handleInputChange = (index: number, value: string) => {
-        const sanitizedValue = /^\d*$/.test(value) ? value : '';
-        const newOtp = [...otp];
-        newOtp[index] = sanitizedValue;
-
-        if (sanitizedValue && index < length - 1) {
-            const nextInput = document.getElementById(`otp-input-${index + 1}`);
-            if (nextInput) {
-                nextInput.focus();
-            }
-        }
-
-        setOtp(newOtp);
-    };
-
-    const isAllFieldsFilled = (): boolean => {
-        return otp.every((digit) => digit !== '');
-    };
     return (
         <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99999] top-0 shadow-md'>
@@ -71,20 +54,9 @@ const EmailVerification: React.FC<OTPInputProps> = () => {
             <div className='flex w-[500px] flex-col min-h-[450px] space-y-3 justify-center items-center mt-32'>
                 <h1 className='text-xl font-extrabold flex justify-center items-center'>Verify your Email Address</h1>
                 <h2 className='text-base text-[#647187] font-extralight flex justify-center items-center'>Input the code we sent to your email address.</h2>
+
                 <div>
-                    {otp.map((digit, index) => (
-                        <input
-                            key={index}
-                            id={`otp-input-${index}`}
-                            type="text"
-                            maxLength={1}
-                            value={digit}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                handleInputChange(index, e.target.value)
-                            }
-                            className='border-[1px] border-[#e4e4e4] rounded-[6px] h-[45px] w-[45px] text-center text-[#314155] font-bold text-[20px] mx-1'
-                        />
-                    ))}
+                    <OTPInput initialLength={4} />
                 </div>
                 <Button btnValue='Continue' className='text-[white] bg-primary h-[40px] w-[300px] rounded-[6px]  hover:border-[1px] hover:bg-[#da7359]' />
 

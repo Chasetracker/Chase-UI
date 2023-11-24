@@ -21,6 +21,9 @@ const SignUp: React.FC<FormProps> = () => {
         error: "",
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [register, setRegister] = useState("Register Now");
+    const [success, setSuccess] = useState(false);
+
 
     // const { data: session } = useSession();
 
@@ -64,7 +67,7 @@ const SignUp: React.FC<FormProps> = () => {
     };
 
     const onSubmit = async (event: { preventDefault: () => void }) => {
-        // event.preventDefault();
+        event.preventDefault();
         // console.log("formdata", formData);
         // const result = await signIn("credentials", {
         //     redirect: false,
@@ -81,7 +84,36 @@ const SignUp: React.FC<FormProps> = () => {
         // } else {
         //     alert("Login Failed");
         // }
-    };
+
+        try {
+            const user = {
+                business_name: formData.businessName,
+                email: formData.email,
+                password: formData.password
+
+            }
+
+            // // console.log('Signup payload:', user);
+            // setRegister("Loading...");
+            const response = await fetch(
+                "https://chase-lvga.onrender.com/api/user/signup",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(user),
+                }
+            );
+            console.log('Signup response:', response);
+        } catch (error) {
+            console.log('Signup error:', error);
+        }
+
+
+
+    }
+
     return (
         <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99999] top-0 shadow-md'>
