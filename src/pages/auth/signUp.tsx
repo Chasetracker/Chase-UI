@@ -2,6 +2,9 @@ import Button from '@/components/Button/Button'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { useRouter } from 'next/router';
+import axios from 'axios'
+
 
 //icons
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -28,7 +31,7 @@ const SignUp: React.FC<FormProps> = () => {
     const [success, setSuccess] = useState(false);
 
 
-    // const { data: session } = useSession();
+    const router = useRouter();
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
@@ -66,23 +69,6 @@ const SignUp: React.FC<FormProps> = () => {
 
     const onSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
-        // console.log("formdata", formData);
-        // const result = await signIn("credentials", {
-        //     redirect: false,
-        //     email: formData.email,
-        //     password: formData.password,
-        //     callbackUrl: "/dashboard/customer",
-        // });
-        // console.log("result", result);
-        // console.log("session", session);
-        // if (result && result.ok) {
-        //     alert("Login Successful");
-        //     // router.push("/dashboard/customer");
-
-        // } else {
-        //     alert("Login Failed");
-        // }
-
         try {
             const user = {
                 business_name: formData.businessName,
@@ -93,22 +79,32 @@ const SignUp: React.FC<FormProps> = () => {
 
             // // console.log('Signup payload:', user);
             // setRegister("Loading...");
-            const response = await fetch(
-                "https://chase-lvga.onrender.com/api/user/signup",
-                {
-                    method: "POST",
-                    // headers: {
-                    //     "Content-Type": "application/json",
-                    // },
-                    body: JSON.stringify(user),
-                }
-            );
+            console.log(user)
+            //     const response = await fetch(
+            //         "https://chase-lvga.onrender.com/api/user/signup",
+            //         {
+            //             method: "POST",
+            //             headers: {
+            //                 "Content-Type": "application/json",
+            //             },
+            //             body: user,
+            //         }
+            //     );
+            //     console.log('Signup response:', response);
+            //     router.push('/auth/emailVerification');
+
+            // } catch (error) {
+            //     console.log('Signup error:', error);
+            // }
+            const response = await axios({
+                method: 'post',
+                url: 'https://chase-lvga.onrender.com/api/user/signup',
+                data: user
+            });
             console.log('Signup response:', response);
         } catch (error) {
             console.log('Signup error:', error);
         }
-
-
 
     }
 
