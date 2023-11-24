@@ -2,6 +2,11 @@ import Button from '@/components/Button/Button'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
+
+//icons
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
+
 interface FormProps {
     businessName: string;
     email: string;
@@ -9,9 +14,7 @@ interface FormProps {
     error: string;
 }
 
-//icons
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
+
 
 const SignUp: React.FC<FormProps> = () => {
     const [formData, setFormData] = useState({
@@ -48,11 +51,6 @@ const SignUp: React.FC<FormProps> = () => {
                     error: '',
                 }));
             }
-
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
         }
 
     };
@@ -99,9 +97,9 @@ const SignUp: React.FC<FormProps> = () => {
                 "https://chase-lvga.onrender.com/api/user/signup",
                 {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    // headers: {
+                    //     "Content-Type": "application/json",
+                    // },
                     body: JSON.stringify(user),
                 }
             );

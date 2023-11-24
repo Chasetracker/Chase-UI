@@ -1,11 +1,11 @@
 import Button from '@/components/Button/Button'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 interface FormProps {
     email: string;
     password: string;
-    rememberMe: boolean;
     error: string;
 }
 
@@ -17,10 +17,11 @@ const Login: React.FC<FormProps> = () => {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
-        rememberMe: false,
         error: "",
     });
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
+
 
     // const { data: session } = useSession();
 
@@ -42,23 +43,31 @@ const Login: React.FC<FormProps> = () => {
     };
 
     const onSubmit = async (event: { preventDefault: () => void }) => {
-        // event.preventDefault();
-        // console.log("formdata", formData);
-        // const result = await signIn("credentials", {
-        //     redirect: false,
-        //     email: formData.email,
-        //     password: formData.password,
-        //     callbackUrl: "/dashboard/customer",
-        // });
-        // console.log("result", result);
-        // console.log("session", session);
-        // if (result && result.ok) {
-        //     alert("Login Successful");
-        //     // router.push("/dashboard/customer");
+        event.preventDefault();
 
-        // } else {
-        //     alert("Login Failed");
-        // }
+        try {
+            const user = {
+                email: formData.email,
+                password: formData.password
+
+            }
+
+            // setRegister("Loading...");
+            const response = await fetch(
+                "https://chase-lvga.onrender.com/api/user/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(user),
+                }
+            );
+            console.log('Signup response:', response);
+            router.push('#');
+        } catch (error) {
+            console.log('Signup error:', error);
+        }
     };
     return (
         <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
