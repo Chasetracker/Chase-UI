@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useRouter } from 'next/router';
+import axios from 'axios'
 
 
 //icons
@@ -78,24 +79,32 @@ const SignUp: React.FC<FormProps> = () => {
 
             // // console.log('Signup payload:', user);
             // setRegister("Loading...");
-            const response = await fetch(
-                "https://chase-lvga.onrender.com/api/user/signup",
-                {
-                    method: "POST",
-                    // headers: {
-                    //     "Content-Type": "application/json",
-                    // },
-                    body: JSON.stringify(user),
-                }
-            );
-            console.log('Signup response:', response);
-            router.push('/auth/emailVerification');
+            console.log(user)
+            //     const response = await fetch(
+            //         "https://chase-lvga.onrender.com/api/user/signup",
+            //         {
+            //             method: "POST",
+            //             headers: {
+            //                 "Content-Type": "application/json",
+            //             },
+            //             body: user,
+            //         }
+            //     );
+            //     console.log('Signup response:', response);
+            //     router.push('/auth/emailVerification');
 
+            // } catch (error) {
+            //     console.log('Signup error:', error);
+            // }
+            const response = await axios({
+                method: 'post',
+                url: 'https://chase-lvga.onrender.com/api/user/signup',
+                data: user
+            });
+            console.log('Signup response:', response);
         } catch (error) {
             console.log('Signup error:', error);
         }
-
-
 
     }
 
