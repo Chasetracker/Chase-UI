@@ -23,7 +23,6 @@ const Login: React.FC<FormProps> = () => {
     const router = useRouter();
 
 
-    // const { data: session } = useSession();
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
