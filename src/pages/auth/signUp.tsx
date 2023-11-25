@@ -94,7 +94,6 @@ const SignUp: React.FC<FormProps> = () => {
             );
 
             // Assuming the registration is successful, you can handle success logic here
-            console.log("Signup response:", response);
             if (response.status === 201) {
                 setErrorMessage(null);
                 const successMessage = "Registration successful";
@@ -112,8 +111,13 @@ const SignUp: React.FC<FormProps> = () => {
                 clearErrorMessage()
             }
         } catch (error) {
-            console.log("Signup error:", error);
             // Handle error if necessary
+            const errorMessage = "An error occurred, check your network connection and try again.";
+            setErrorMessage(errorMessage);
+            toast.error(errorMessage, {
+                position: toast.POSITION.BOTTOM_LEFT,
+            });
+            clearErrorMessage()
         } finally {
             // Reset the UI state
             setRegister("Register Now");
