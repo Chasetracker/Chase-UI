@@ -113,7 +113,7 @@ const Login: React.FC<FormProps> = () => {
         <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
             <ToastContainer />
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99998] top-0 shadow-md'>
-                <Link href='#' className='flex h-[50px] justify-center items-center space-x-2 '>
+                <Link href='/' className='flex h-[50px] justify-center items-center space-x-2 '>
                     <div className='relative w-[45px] h-[45px]'>
                         <Image src='/svgs/logo.svg' alt='' fill />
                     </div>
