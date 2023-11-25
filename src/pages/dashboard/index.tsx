@@ -7,7 +7,7 @@ const index = () => {
         <>
             <DashboardLayout>
                 <main>
-                    <h1 >Sales</h1>
+                    <h1>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Error, sequi exercitationem amet rem sint architecto possimus vel placeat! Deserunt aut nihil pariatur incidunt, suscipit dolores provident atque vel ducimus omnis.</h1>
                 </main>
             </DashboardLayout>
         </>
