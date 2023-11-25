@@ -5,6 +5,9 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 import axios from 'axios'
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 //icons
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -27,11 +30,17 @@ const SignUp: React.FC<FormProps> = () => {
         error: "",
     });
     const [showPassword, setShowPassword] = useState(false);
-    const [register, setRegister] = useState("Register Now");
+    const [register, setRegister] = useState("Sign Up");
     const [success, setSuccess] = useState(false);
-
-
     const router = useRouter();
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+
+    const clearErrorMessage = () => {
+        setTimeout(() => {
+            setErrorMessage(null); // Clear the error message after 5 seconds
+        }, 5000);
+    };
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
@@ -78,38 +87,54 @@ const SignUp: React.FC<FormProps> = () => {
             }
 
             // // console.log('Signup payload:', user);
-            // setRegister("Loading...");
-            console.log(user)
-            //     const response = await fetch(
-            //         "https://chase-lvga.onrender.com/api/user/signup",
-            //         {
-            //             method: "POST",
-            //             headers: {
-            //                 "Content-Type": "application/json",
-            //             },
-            //             body: user,
-            //         }
-            //     );
-            //     console.log('Signup response:', response);
-            //     router.push('/auth/emailVerification');
+            setRegister("Registering...");
+            const response = await axios.post(
+                "https://chase-lvga.onrender.com/api/user/signup",
+                user
+            );
 
-            // } catch (error) {
-            //     console.log('Signup error:', error);
-            // }
-            const response = await axios({
-                method: 'post',
-                url: 'https://chase-lvga.onrender.com/api/user/signup',
-                data: user
-            });
-            console.log('Signup response:', response);
+            // Assuming the registration is successful, you can handle success logic here
+            if (response.status === 201) {
+                setErrorMessage(null);
+                const successMessage = "Registration successful";
+                toast.success(successMessage, {
+                    position: toast.POSITION.BOTTOM_LEFT,
+                });
+                setSuccess(true);
+                router.push('/auth/emailVerification');
+            } else {
+                const errorMessage = "An error occurred, check your credentials and try again.";
+                setErrorMessage(errorMessage);
+                toast.error(errorMessage, {
+                    position: toast.POSITION.BOTTOM_LEFT,
+                });
+                clearErrorMessage()
+            }
         } catch (error) {
-            console.log('Signup error:', error);
+            // Handle error if necessary
+            const errorMessage = "An error occurred, check your network connection and try again.";
+            setErrorMessage(errorMessage);
+            toast.error(errorMessage, {
+                position: toast.POSITION.BOTTOM_LEFT,
+            });
+            clearErrorMessage()
+        } finally {
+            // Reset the UI state
+            setRegister("Register Now");
+            setFormData({
+                businessName: "",
+                email: "",
+                password: "",
+                error: "",
+            });
         }
+
 
     }
 
     return (
         <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
+            <ToastContainer />
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99999] top-0 shadow-md'>
                 <Link href='#' className='flex h-[50px] justify-center items-center space-x-2 '>
                     <div className='relative w-[45px] h-[45px]'>
@@ -131,6 +156,11 @@ const SignUp: React.FC<FormProps> = () => {
                 <h2 className='text-base text-[#647187] font-extralight flex justify-center items-center'>Get started by providing these details.</h2>
 
                 <form action="" onSubmit={onSubmit} className={`space-y-3 w-[450px] px-10`}>
+                    {errorMessage && (
+                        <p className="text-base font-medium text-[red]">
+                            {errorMessage}
+                        </p>
+                    )}
                     <div className={`flex flex-col `}>
                         <label htmlFor="businessName" className={`font-bold text-[16px] text-[#314155] my-1`}>
                             Busines Name
@@ -197,7 +227,7 @@ const SignUp: React.FC<FormProps> = () => {
                             className={`w-full bg-primary text-white py-2 px-4 rounded-md text-sm ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
                             disabled={!isAllFieldsFilled()}
                         >
-                            Sign Up
+                            {register}
                         </button>
 
                     </div>

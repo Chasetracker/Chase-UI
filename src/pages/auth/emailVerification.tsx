@@ -1,5 +1,5 @@
 import Button from '@/components/Button/Button'
-import OTPInput from '@/components/Otp Layout/OtpLayout';
+import OTPInput from '@/components/Layout/OtpLayout';
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, ChangeEvent } from 'react';
@@ -58,7 +58,6 @@ const EmailVerification: React.FC<OTPInputProps> = () => {
                 <div>
                     <OTPInput initialLength={4} />
                 </div>
-                <Button btnValue='Continue' className='text-[white] bg-primary h-[40px] w-[300px] rounded-[6px]  hover:border-[1px] hover:bg-[#da7359]' />
 
             </div>
 

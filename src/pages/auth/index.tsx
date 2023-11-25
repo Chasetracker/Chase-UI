@@ -3,15 +3,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
+import axios from 'axios'
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+//icons
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
+
+
 interface FormProps {
     email: string;
     password: string;
     error: string;
 }
 
-//icons
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
 
 const Login: React.FC<FormProps> = () => {
     const [formData, setFormData] = useState({
@@ -20,8 +27,17 @@ const Login: React.FC<FormProps> = () => {
         error: "",
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [register, setRegister] = useState("Sign In");
+    const [success, setSuccess] = useState(false);
     const router = useRouter();
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+
+    const clearErrorMessage = () => {
+        setTimeout(() => {
+            setErrorMessage(null); // Clear the error message after 5 seconds
+        }, 5000);
+    };
 
 
     const handleChange = (e: any) => {
@@ -51,26 +67,52 @@ const Login: React.FC<FormProps> = () => {
 
             }
 
-            // setRegister("Loading...");
-            const response = await fetch(
+            setRegister("Signing In...");
+            const response = await axios.post(
                 "https://chase-lvga.onrender.com/api/user/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(user),
-                }
+                user
             );
-            console.log('Signup response:', response);
-            router.push('#');
+
+            // Assuming the registration is successful, you can handle success logic here
+            if (response.status === 200) {
+                setErrorMessage(null);
+                const successMessage = "Login successful";
+                toast.success(successMessage, {
+                    position: toast.POSITION.BOTTOM_LEFT,
+                });
+                setSuccess(true);
+                router.push('/dashboard');
+
+            } else {
+                const errorMessage = "An error occurred, check your credentials and try again.";
+                setErrorMessage(errorMessage);
+                toast.error(errorMessage, {
+                    position: toast.POSITION.BOTTOM_LEFT,
+                });
+                clearErrorMessage()
+            }
         } catch (error) {
-            console.log('Signup error:', error);
+            // Handle error if necessary
+            const errorMessage = "An error occurred, check your network connection and try again.";
+            setErrorMessage(errorMessage);
+            toast.error(errorMessage, {
+                position: toast.POSITION.BOTTOM_LEFT,
+            });
+            clearErrorMessage()
+        } finally {
+            // Reset the UI state
+            setRegister("Sign In");
+            setFormData({
+                email: "",
+                password: "",
+                error: "",
+            });
         }
     };
     return (
         <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
-            <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99999] top-0 shadow-md'>
+            <ToastContainer />
+            <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99998] top-0 shadow-md'>
                 <Link href='#' className='flex h-[50px] justify-center items-center space-x-2 '>
                     <div className='relative w-[45px] h-[45px]'>
                         <Image src='/svgs/logo.svg' alt='' fill />
@@ -87,10 +129,16 @@ const Login: React.FC<FormProps> = () => {
                 </div>
             </nav>
             <div className='flex w-[450px] flex-col h-[500px] justify-center items-center space-y-3 mt-16'>
+
                 <h1 className='text-xl font-extrabold flex justify-center items-center'>Log in to your account</h1>
                 <h2 className='text-base font-extralight text-[#647187] flex justify-center items-center'>Welcome back! Please enter your details.</h2>
 
                 <form action="" onSubmit={onSubmit} className={`space-y-3 w-full px-10`}>
+                    {errorMessage && (
+                        <p className="text-base font-medium text-[red]">
+                            {errorMessage}
+                        </p>
+                    )}
                     <div className={`flex flex-col `}>
                         <label
                             htmlFor="email"
@@ -131,7 +179,7 @@ const Login: React.FC<FormProps> = () => {
                         </div>
                     </div>
                     <div className={`flex  font-[600]  justify-end text-base mx-auto`}>
-                        <Link href='/auth/forget-password' className={`text-primary text-base hover:text-[14.5px] `}>Forgot Password?</Link>
+                        <Link href='#' className={`text-primary text-base hover:text-[14.5px] `}>Forgot Password?</Link>
                     </div>
 
                     <div className={`flex flex-col justify-center items-center`}>
@@ -140,7 +188,7 @@ const Login: React.FC<FormProps> = () => {
                             className={`w-full bg-primary text-white py-2 px-4 rounded-md text-sm ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
                             disabled={!isAllFieldsFilled()}
                         >
-                            Sign in
+                            {register}
                         </button>
 
                     </div>
