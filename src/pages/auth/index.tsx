@@ -67,7 +67,6 @@ const Login: React.FC<FormProps> = () => {
 
             }
 
-            // // console.log('Signup payload:', user);
             setRegister("Signing In...");
             const response = await axios.post(
                 "https://chase-lvga.onrender.com/api/user/login",
