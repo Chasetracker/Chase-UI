@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 import axios from 'axios'
+import { inter } from '@/styles/font';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -133,10 +134,10 @@ const SignUp: React.FC<FormProps> = () => {
     }
 
     return (
-        <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
+        <div className={`flex flex-col w-full justify-center min-h-screen items-center pb-16 ${inter.className}`}>
             <ToastContainer />
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99999] top-0 shadow-md'>
-                <Link href='#' className='flex h-[50px] justify-center items-center space-x-2 '>
+                <Link href='/' className='flex h-[50px] justify-center items-center space-x-2 '>
                     <div className='relative w-[45px] h-[45px]'>
                         <Image src='/svgs/logo.svg' alt='' fill />
                     </div>

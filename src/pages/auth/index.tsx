@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { inter } from '@/styles/font';
 //icons
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
@@ -27,7 +27,7 @@ const Login: React.FC<FormProps> = () => {
         error: "",
     });
     const [showPassword, setShowPassword] = useState(false);
-    const [register, setRegister] = useState("Sign In");
+    const [login, setLogin] = useState("Sign In");
     const [success, setSuccess] = useState(false);
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -67,7 +67,7 @@ const Login: React.FC<FormProps> = () => {
 
             }
 
-            setRegister("Signing In...");
+            setLogin("Signing In...");
             const response = await axios.post(
                 "https://chase-lvga.onrender.com/api/user/login",
                 user
@@ -84,7 +84,7 @@ const Login: React.FC<FormProps> = () => {
                 router.push('/dashboard');
 
             } else {
-                const errorMessage = "An error occurred, check your credentials and try again.";
+                const errorMessage = "Invalid email or password";
                 setErrorMessage(errorMessage);
                 toast.error(errorMessage, {
                     position: toast.POSITION.BOTTOM_LEFT,
@@ -101,7 +101,7 @@ const Login: React.FC<FormProps> = () => {
             clearErrorMessage()
         } finally {
             // Reset the UI state
-            setRegister("Sign In");
+            setLogin("Sign In");
             setFormData({
                 email: "",
                 password: "",
@@ -110,7 +110,7 @@ const Login: React.FC<FormProps> = () => {
         }
     };
     return (
-        <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
+        <div className={`flex flex-col w-full justify-center min-h-screen items-center pb-16 ${inter.className}`}>
             <ToastContainer />
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99998] top-0 shadow-md'>
                 <Link href='/' className='flex h-[50px] justify-center items-center space-x-2 '>
@@ -188,7 +188,7 @@ const Login: React.FC<FormProps> = () => {
                             className={`w-full bg-primary text-white py-2 px-4 rounded-md text-sm ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
                             disabled={!isAllFieldsFilled()}
                         >
-                            {register}
+                            {login}
                         </button>
 
                     </div>

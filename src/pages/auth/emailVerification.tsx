@@ -3,6 +3,7 @@ import OTPInput from '@/components/Layout/OtpLayout';
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, ChangeEvent } from 'react';
+import { inter } from '@/styles/font';
 interface OTPInputProps {
     length: number;
 }
@@ -10,31 +11,8 @@ interface OTPInputProps {
 
 const EmailVerification: React.FC<OTPInputProps> = () => {
 
-
-
-    const onSubmit = async (event: { preventDefault: () => void }) => {
-        // event.preventDefault();
-        // console.log("formdata", formData);
-        // const result = await signIn("credentials", {
-        //     redirect: false,
-        //     email: formData.email,
-        //     password: formData.password,
-        //     callbackUrl: "/dashboard/customer",
-        // });
-        // console.log("result", result);
-        // console.log("session", session);
-        // if (result && result.ok) {
-        //     alert("Login Successful");
-        //     // router.push("/dashboard/customer");
-
-        // } else {
-        //     alert("Login Failed");
-        // }
-    };
-
-
     return (
-        <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
+        <div className={`flex flex-col w-full justify-center min-h-screen items-center pb-1 ${inter.className}`}>
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99999] top-0 shadow-md'>
                 <Link href='/' className='flex h-[50px] justify-center items-center space-x-2 '>
                     <div className='relative w-[45px] h-[45px]'>
