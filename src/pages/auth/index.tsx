@@ -27,7 +27,7 @@ const Login: React.FC<FormProps> = () => {
         error: "",
     });
     const [showPassword, setShowPassword] = useState(false);
-    const [register, setRegister] = useState("Sign In");
+    const [login, setLogin] = useState("Sign In");
     const [success, setSuccess] = useState(false);
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -67,7 +67,7 @@ const Login: React.FC<FormProps> = () => {
 
             }
 
-            setRegister("Signing In...");
+            setLogin("Signing In...");
             const response = await axios.post(
                 "https://chase-lvga.onrender.com/api/user/login",
                 user
@@ -101,7 +101,7 @@ const Login: React.FC<FormProps> = () => {
             clearErrorMessage()
         } finally {
             // Reset the UI state
-            setRegister("Sign In");
+            setLogin("Sign In");
             setFormData({
                 email: "",
                 password: "",
@@ -188,7 +188,7 @@ const Login: React.FC<FormProps> = () => {
                             className={`w-full bg-primary text-white py-2 px-4 rounded-md text-sm ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
                             disabled={!isAllFieldsFilled()}
                         >
-                            {register}
+                            {login}
                         </button>
 
                     </div>

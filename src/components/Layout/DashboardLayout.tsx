@@ -22,7 +22,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
     return (
         <div className='w-full h-[100vh] flex '>
-            <aside className='w-1/4 h-[100vh] shadow-xl flex sticky top-0 flex-col items-start  overflow-y-auto shrink-0 basis-auto grow-0'>
+            <aside className='w-1/4 h-[100vh] shadow-xl flex sticky top-0 flex-col items-start z-[99999] bg-white overflow-y-auto shrink-0 basis-auto grow-0'>
                 <Link href='/' className='flex h-[50px] justify-center pt-12 pl-5 items-center space-x-2 mb-20'>
                     <div className='relative w-[40px] h-[45px]'>
                         <Image src='/svgs/logo.svg' alt='' fill />
@@ -51,21 +51,16 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                     </Link>
                 </ul>
 
-                <Link href='#' className='relative flex flex-col p-3 h-[150px] w-[290px] justify-evenly items-start bg-[#FFDBA4] rounded-md mx-auto'>
-                    <div className='z-50 space-y-2'>
-                        <TbReceipt className="text-2xl text-[#EC4A0A]" />
-                        <h1 className='font-extrabold text-sm pl-1'>Record a new sale</h1>
-                        <h2 className='font-light text-[16px] pl-1'>Starting recording your new sale</h2>
-                    </div>
-                    <div className='absolute w-[200px] h-[150px] right-0'>
-                        <Image src='/svgs/card.svg' alt='' fill />
+                <Link href='#' className=' flex justify-center items-center  mx-auto'>
+                    <div className='relative w-[300px] h-[150px] '>
+                        <Image src='/svgs/card2.svg' alt='' fill />
                     </div>
                 </Link>
 
             </aside>
 
             <div className="flex flex-col w-3/4 h-[100vh]">
-                <nav className='flex py-5 px-10 w-full justify-end items-center  bg-white z-[99999] top-0 right-0  h-[100px] shadow-sm'>
+                <nav className='flex py-5 px-10 w-full justify-end items-center  bg-white z-[99998] top-0 right-0 fixed  h-[100px] shadow-sm'>
                     <div className=' flex space-x-3 justify-center items-center'>
                         <Link href='#' className='h-[45px] w-[45px] border-[1px] text-md bg-white hover:bg-[#F2F4F7] border-[#F2F4F7] flex justify-center items-center rounded-md text-[#344054]'>
                             <RiSettingsLine />
@@ -80,7 +75,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                         </Link>
                     </div>
                 </nav>
-                <main className='p-10'>{children}</main>
+                <main className='p-10 mt-[75px] w-full h-full'>{children}</main>
             </div>
 
         </div>

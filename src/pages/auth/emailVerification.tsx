@@ -10,29 +10,6 @@ interface OTPInputProps {
 
 const EmailVerification: React.FC<OTPInputProps> = () => {
 
-
-
-    const onSubmit = async (event: { preventDefault: () => void }) => {
-        // event.preventDefault();
-        // console.log("formdata", formData);
-        // const result = await signIn("credentials", {
-        //     redirect: false,
-        //     email: formData.email,
-        //     password: formData.password,
-        //     callbackUrl: "/dashboard/customer",
-        // });
-        // console.log("result", result);
-        // console.log("session", session);
-        // if (result && result.ok) {
-        //     alert("Login Successful");
-        //     // router.push("/dashboard/customer");
-
-        // } else {
-        //     alert("Login Failed");
-        // }
-    };
-
-
     return (
         <div className='flex flex-col w-full justify-center min-h-screen items-center pb-16'>
             <nav className='flex py-5 px-20 w-full justify-between items-center h-[90px] bg-white fixed z-[99999] top-0 shadow-md'>
