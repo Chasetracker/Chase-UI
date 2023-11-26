@@ -1,6 +1,5 @@
-import Button from '@/components/Button/Button';
-import DashboardLayout from '@/components/Layout/DashboardLayout'
 import React, { useState } from 'react'
+import DashboardLayout from '@/components/Layout/DashboardLayout'
 import axios from 'axios'
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from "react-toastify";
@@ -8,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 //icons
 import { ImCancelCircle } from "react-icons/im";
+import { on } from 'events';
 
 interface FormProps {
     accountName: string;
@@ -16,7 +16,7 @@ interface FormProps {
 }
 
 
-const index: React.FC<FormProps> = () => {
+const Home: React.FC<FormProps> = () => {
     const [formData, setFormData] = useState({
         accountName: "",
         accountNumber: "",
@@ -28,6 +28,8 @@ const index: React.FC<FormProps> = () => {
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+    const [isOpened, setIsOpened] = useState(true);
+    const closeModal = () => setIsOpened(!isOpened);
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
@@ -35,6 +37,21 @@ const index: React.FC<FormProps> = () => {
             ...prevData,
             [name]: value,
         }));
+        if (name === 'accountNumber') {
+            const accountNumberPattern = /^[0-9]{10}$/;
+            if (value && !accountNumberPattern.test(value)) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    error: 'Account number must be 10 digits',
+                }));
+            } else {
+                // Clear the error message if the password matches the pattern or is empty
+                setFormData((prevData) => ({
+                    ...prevData,
+                    error: '',
+                }));
+            }
+        }
     }
     const clearErrorMessage = () => {
         setTimeout(() => {
@@ -110,17 +127,18 @@ const index: React.FC<FormProps> = () => {
                         <h2 className='text-[16px] font-light'>Track, manage and forecast your customers and orders.</h2>
                     </div>
 
-                    <div className='absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[400px] border-[1px] border-[red] rounded-md bg-white p-3'>
-                        <div className='flex justify-between items-start w-full'>
+                    <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[400px] border-[1px] border-[red] rounded-md bg-white p-3 ${isOpened ? '' : 'hidden'}`}>
+                        <div className='flex justify-between items-start w-full mb-3'>
                             <div>
                                 <h1 className='text-[20px] font-extrabold text-black'>Add your Account Details</h1>
                                 <h2 className='text-base text-[#667085]'>Complete your account creation</h2>
                             </div>
-                            <div className='text-sm flex justify-center items-center mt-3'>
+                            <div className='text-[20px] flex justify-center items-center mt-3 hover:text-[21px] cursor-pointer'
+                                onClick={closeModal}>
                                 <ImCancelCircle />
                             </div>
                         </div>
-                        <form onSubmit={onSubmit} className='w-full space-y-2'>
+                        <form onSubmit={onSubmit} className='w-full space-y-3'>
                             {errorMessage && (
                                 <p className="text-base font-medium text-[red]">
                                     {errorMessage}
@@ -138,7 +156,7 @@ const index: React.FC<FormProps> = () => {
                                     placeholder="Input Account number"
                                     id="accountNumber"
                                     name="accountNumber"
-                                    className={`border-medium border-[1px] text-base text-black font-bold py-3 px-5 rounded-md w-full`}
+                                    className={`border-[#D0D5DD]     border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
                                     value={formData.accountNumber}
                                     onChange={handleChange}
                                     required
@@ -147,7 +165,7 @@ const index: React.FC<FormProps> = () => {
                             <div className={`flex flex-col `}>
                                 <label
                                     htmlFor="bankName"
-                                    className={`font-bold text-[16px] text-[#314155] my-1`}
+                                    className={`font-bold text-[12px] text-[#314155] my-1`}
                                 >
                                     Bank
                                 </label>
@@ -156,7 +174,7 @@ const index: React.FC<FormProps> = () => {
                                     placeholder="Bank Name"
                                     id="bankName"
                                     name="bankName"
-                                    className={`border-medium border-[1px] text-base text-black font-bold py-3 px-5 rounded-md w-full`}
+                                    className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
                                     value={formData.bankName}
                                     onChange={handleChange}
                                     required
@@ -165,33 +183,33 @@ const index: React.FC<FormProps> = () => {
                             <div className={`flex flex-col `}>
                                 <label
                                     htmlFor="accountName"
-                                    className={`font-bold text-[16px] text-[#314155] my-1`}
+                                    className={`font-bold text-[12px] text-[#314155] my-1`}
                                 >
                                     Account Name
                                 </label>
                                 <input
-                                    type="email"
+                                    type="text"
                                     placeholder="Name Surname"
                                     id="accountName"
                                     name="accountName"
-                                    className={`border-medium border-[1px] text-base text-black font-bold py-3 px-5 rounded-md w-full`}
+                                    className={`border-[#D0D5DD] border-[1px] text-base bg-[#D0D5DD] text-[#445568] font-normal p-3 rounded-md w-full`}
                                     value={formData.accountName}
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
 
-                            <div className={`flex justify-center mt-5 items-center`}>
+                            <div className={`flex justify-between items-center w-full space-x-3`}>
                                 <button
                                     type="submit"
-                                    className={`w-full bg-primary text-white py-2 px-4 rounded-md text-sm ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
-                                    disabled={!isAllFieldsFilled()}
+                                    className={`w-3/4 bg-white text-[#314155] py-2 px-4 border-[1px] border-[#CCD5DF] rounded-md text-sm hover:bg-[red] hover:text-white`}
+                                    onClick={closeModal}
                                 >
                                     cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className={`w-full bg-primary text-white py-2 px-4 rounded-md text-sm ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
+                                    className={`w-3/4 bg-[#FF3500] text-white py-2 px-4 rounded-md text-sm hover:bg-[#c46a53]  ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
                                     disabled={!isAllFieldsFilled()}
                                 >
                                     {save}
@@ -206,4 +224,4 @@ const index: React.FC<FormProps> = () => {
     )
 }
 
-export default index
+export default Home

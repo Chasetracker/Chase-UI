@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from "next/router";
+import { inter } from '@/styles/font';
 
 
 //icons 
@@ -19,9 +20,8 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
     const isLinkActive = (linkPath: string) => {
         return router.asPath === linkPath;
     };
-
     return (
-        <div className='w-full h-[100vh] flex '>
+        <div className={`w-full h-[100vh] flex ${inter.className} `}>
             <aside className='w-1/4 h-[100vh] shadow-xl flex sticky top-0 flex-col items-start z-[99999] bg-white overflow-y-auto shrink-0 basis-auto grow-0'>
                 <Link href='/' className='flex h-[50px] justify-center pt-12 pl-5 items-center space-x-2 mb-20'>
                     <div className='relative w-[40px] h-[45px]'>

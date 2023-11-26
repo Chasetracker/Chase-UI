@@ -46,6 +46,7 @@ const OTPInput: React.FC<OTPInputProps> = ({ initialLength }) => {
             setVerify("Verifying...");
 
             const otpVerify = await axios.get('https://chase-lvga.onrender.com/api/user/verify/email/6562737a1d5b182d1b44f66e/7539')
+            console.log(otpVerify)
             if (otpVerify.status === 200) {
                 setErrorMessage(null);
                 const successMessage = "OTP Verified Successfully";
