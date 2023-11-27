@@ -97,6 +97,14 @@ const SignUp: React.FC<FormProps> = () => {
             // Assuming the registration is successful, you can handle success logic here
             if (response.status === 201) {
                 setErrorMessage(null);
+                const userId = response.data.user._id;
+                const userBusinessName = response.data.user.business_name;
+                const userEmail = response.data.user.email;
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("userId", userId);
+                    localStorage.setItem("userBusinessName", userBusinessName);
+                    localStorage.setItem("userEmail", userEmail);
+                }
                 const successMessage = "Registration successful";
                 toast.success(successMessage, {
                     position: toast.POSITION.BOTTOM_LEFT,

@@ -3,6 +3,7 @@ import { ImCancelCircle } from "react-icons/im";
 import { BsCopy } from "react-icons/bs";
 import Link from 'next/link';
 import axios from 'axios';
+import { config } from 'process';
 interface ApiResponse {
     totalSalesAmount: number;
     customerName: string;
@@ -22,15 +23,25 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
         // Fetch data using Axios when the component mounts
         const fetchData = async () => {
             try {
-                const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU1ZmE5YmE3MmM0MmMxN2IzZDc0M2M0IiwiZW1haWwiOiJvbnVvaGFjb2xsaW5zY2hpZHViZW1AZ21haWwuY29tIiwiaWF0IjoxNzAwOTE0MDAxfQ.fv0ReJ2HUWqzWtupFNY4tby6pZGD6PxOx9KpPtjOi-k'; // Replace with your actual authorization token
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                if (typeof window !== 'undefined' && window.localStorage) {
+                    const authToken = localStorage.getItem("token");
+
+                    if (!authToken) {
+                        console.error("Authentication token not found");
+                        return;
+                    }
+
+                    const config = {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    };
+
+
+                    const response = await axios.get('https://chase-lvga.onrender.com/api/get-invoices', config)
+                    console.log(response.data.InvoiceRecord);
+                    setTransactions(response.data.InvoiceRecord);
                 }
-                const response = await axios.get('https://chase-lvga.onrender.com/api/get-invoices', config)
-                console.log(response.data.InvoiceRecord);
-                setTransactions(response.data.InvoiceRecord); // Assuming your data is an array
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -41,7 +52,11 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
     const totalPages = Math.ceil(transactions.length / transactionsPerPage);
 
     const handlePageChange = (page: number) => {
-        setCurrentPage(page);
+        const nextPage = Math.max(1, Math.min(page, totalPages));
+
+        if (nextPage !== currentPage) {
+            setCurrentPage(nextPage);
+        }
     };
 
     const visibleTransactions = transactions.slice(
@@ -49,8 +64,8 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
         currentPage * transactionsPerPage
     );
     return (
-        <div className='w-full'>
-            <table className='w-full'>
+        <div className='w-full flex flex-col justify-between'>
+            <table className='w-full h-5/6'>
                 <thead className='w-full bg-[#F8FAFB] h-[50px] rounded-t-md flex border-b-[2px] border-[#EAECF0]'>
                     <tr className='w-full flex justify-between items-center text-[#7B7B7B] text-light text-[12px]  px-3 '>
                         <th className='w-[20px]  flex justify-start items-center'><input type="checkbox" /></th>
@@ -98,12 +113,16 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
                         </tr>
                     ))}
                 </tbody>
-                <div className='w-full flex justify-between items-center bottom-0 h-[80px]  border-[red] border-[1px]'>
-                    <p className='text-[#7B7B7B] text-[12px] w-1/5'>Page {currentPage} of {totalPages}</p>
-                    <div className='w-4/5'>
+            </table>
+
+            <div className='h-1/6 w-full absolute   bottom-0'>
+                <div className='w-[92%] flex justify-between items-center p-3  h-3/4  border-[#EAECF0] border-t-[1px]'>
+                    <p className='text-[#7B7B7B] flex justify-start font-bold text-[15px] w-1/5'>Page {currentPage} of {totalPages}</p>
+                    <div className='w-4/5 flex justify-end space-x-3'>
                         <button
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
+                            className={`w-[100px] text-base border-[#CCD5DF] p-2 rounded-md border-[1px] font-bold text-[#314155] bg-[#F9FAFC] hover:bg-[#a6adbb] cursor-pointer`}
                         >
                             Previous
                         </button>
@@ -111,13 +130,14 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
                         <button
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
+                            className={`w-[100px] text-base border-[#CCD5DF] p-2 rounded-md border-[1px] font-bold text-[#314155] bg-[#F9FAFC] hover:bg-[#a6adbb] cursor-pointer`}
+
                         >
                             Next
                         </button>
                     </div>
                 </div>
-
-            </table>
+            </div>
 
 
         </div >
