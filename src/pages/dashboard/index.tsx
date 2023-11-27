@@ -237,7 +237,7 @@ const Home: React.FC<FormProps> = () => {
                         <h2 className='text-[16px] font-light'>Track, manage and forecast your customers and orders.</h2>
                     </div>
                     <div className='relative w-full h-[150px]'>
-                        <Image src='/images/metric.png' alt='hero' fill />
+                        <Image src='/images/Metric.png' alt='hero' fill />
                     </div>
 
                     <section className={`flex flex-col w-full space-y- ${isOpened ? ' opacity-[0.3]' : ''}`}>
