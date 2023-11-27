@@ -204,7 +204,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
         <>
             <DashboardLayout>
                 <main className={`relative w-full h-full px-10 pt-10  `}>
-                    <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[460px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
+                    <div className={`absolute flex flex-col justify-center items-center w-[400px] top-[15rem] left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[580px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
                         <div className='flex justify-between items-start w-full mb-3'>
                             <div>
                                 <h1 className='text-[20px] font-extrabold text-black'>Record New Sale</h1>
@@ -324,6 +324,20 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
                                     required
                                 />
                             </div>
+                            <div className='bg-[#FFF5EC] flex flex-col space-y-2 rounded-md w-full p-4'>
+                                <div className='flex w-full justify-between'>
+                                    <h1>Acount Name</h1>
+                                    <h1>0233471679</h1>
+                                </div>
+                                <div className='flex w-full justify-between'>
+                                    <h1>Bank</h1>
+                                    <h1>GT Bank</h1>
+                                </div>
+                                <div className='flex w-full justify-between'>
+                                    <h1>Business name</h1>
+                                    <h1>GroceryHub</h1>
+                                </div>
+                            </div>
 
                             <div className={`flex justify-between items-center w-full space-x-3`}>
                                 <button
@@ -351,19 +365,19 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
                                 <div className='flex w-[225px]'>
                                     <button
                                         type="button"
-                                        className={`w-[75px] bg-white h-[45px] text-[#314155] border-[1px] border-[#CCD5DF] p-2 text-[12px] rounded-l-md hover:bg-[#F8FAFB]`}
+                                        className={`w-[75px] bg-white h-[45px] text-[#314155] border-[1px] border-[#CCD5DF] p-2 text-[10px] rounded-l-md hover:bg-[#F8FAFB]`}
                                     >
                                         Today
                                     </button>
                                     <button
                                         type="button"
-                                        className={`w-[75px] bg-white h-[45px] text-[#314155]  border-t-[1px] border-b-[1px] border-[#CCD5DF] p-2 text-[12px] hover:bg-[#F8FAFB]`}
+                                        className={`w-[75px] bg-white h-[45px] text-[#314155]  border-t-[1px] border-b-[1px] border-[#CCD5DF] p-2 text-[10px] hover:bg-[#F8FAFB]`}
                                     >
                                         This Week
                                     </button>
                                     <button
                                         type="button"
-                                        className={`w-[80px] bg-white h-[45px] text-[#314155] p-2 text-[12px]  border-[1px] border-[#CCD5DF] rounded-r-md hover:bg-[#F8FAFB]  `}
+                                        className={`w-[80px] bg-white h-[45px] text-[#314155] p-2 text-[10px]  border-[1px] border-[#CCD5DF] rounded-r-md hover:bg-[#F8FAFB]  `}
                                     >
                                         This Month
                                     </button>
