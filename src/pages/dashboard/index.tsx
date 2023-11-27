@@ -35,10 +35,15 @@ const Home: React.FC<FormProps> = () => {
 
     useEffect(() => {
         // Check if there is a valid token in local storage
-        const authToken = localStorage.getItem('token');
-        if (!authToken) {
-            // Redirect the user to the login page if there is no valid token
-            router.push('/login');
+        if (typeof window !== 'undefined' && window.localStorage) {
+            const authToken = localStorage.getItem("token");
+
+            if (!authToken) {
+                // Redirect the user to the login page if there is no valid token
+                router.push('/login');
+
+
+            }
         }
     }, []);
 
