@@ -100,9 +100,12 @@ const SignUp: React.FC<FormProps> = () => {
                 const userId = response.data.user._id;
                 const userBusinessName = response.data.user.business_name;
                 const userEmail = response.data.user.email;
-                localStorage.setItem("userId", userId);
-                localStorage.setItem("userBusinessName", userBusinessName);
-                localStorage.setItem("userEmail", userEmail);
+                if (typeof window !== "undefined") {
+                    // Access localStorage here
+                    localStorage.setItem("userId", userId);
+                    localStorage.setItem("userBusinessName", userBusinessName);
+                    localStorage.setItem("userEmail", userEmail);
+                }
                 const successMessage = "Registration successful";
                 toast.success(successMessage, {
                     position: toast.POSITION.BOTTOM_LEFT,

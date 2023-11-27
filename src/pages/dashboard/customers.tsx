@@ -64,54 +64,54 @@ const Customers: React.FC<FormProps> = () => {
     event.preventDefault();
     try {
 
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const authToken = localStorage.getItem("token");
+
+        if (!authToken) {
+          console.error("Authentication token not found");
+          return;
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        };
+
+        const invoice = {
+          name: formData.customerName,
+          email: formData.email,
+          phoneNumber: formData.phone
 
 
-      const authToken = localStorage.getItem("token");
+        }
 
-      // Check if the token is present
-      if (!authToken) {
-        // Handle the case where the token is not available
-        console.error("Authentication token not found");
-        return;
-      }
+        // // console.log('Signup payload:', user);
+        setSend("Saving...");
 
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-      };
+        const response = await axios.post(
+          "https://chase-lvga.onrender.com/api/add-customer",
+          invoice,
+          config
+        );
 
-      const invoice = {
-        name: formData.customerName,
-        email: formData.email,
-        phoneNumber: formData.phone
-
-
-      }
-
-      // // console.log('Signup payload:', user);
-      setSend("Saving...");
-
-      const response = await axios.post(
-        "https://chase-lvga.onrender.com/api/add-customer",
-        invoice,
-        { headers }
-      );
-
-      // Assuming the registration is successful, you can handle success logic here
-      if (response.status === 201) {
-        setErrorMessage(null);
-        const successMessage = "Saving successful";
-        toast.success(successMessage, {
-          position: toast.POSITION.BOTTOM_LEFT,
-        });
-        setSuccess(true);
-        router.reload();
-      } else {
-        const errorMessage = "An error occurred, check your credentials and try again.";
-        setErrorMessage(errorMessage);
-        toast.error(errorMessage, {
-          position: toast.POSITION.BOTTOM_LEFT,
-        });
-        clearErrorMessage()
+        // Assuming the registration is successful, you can handle success logic here
+        if (response.status === 201) {
+          setErrorMessage(null);
+          const successMessage = "Saving successful";
+          toast.success(successMessage, {
+            position: toast.POSITION.BOTTOM_LEFT,
+          });
+          setSuccess(true);
+          router.reload();
+        } else {
+          const errorMessage = "An error occurred, check your credentials and try again.";
+          setErrorMessage(errorMessage);
+          toast.error(errorMessage, {
+            position: toast.POSITION.BOTTOM_LEFT,
+          });
+          clearErrorMessage()
+        }
       }
     } catch (error) {
       // Handle error if necessary

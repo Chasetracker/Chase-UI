@@ -10,6 +10,7 @@ import { GoPlus } from "react-icons/go";
 import { ImCancelCircle } from 'react-icons/im';
 import TransactionList from '@/components/Layout/TransactionList';
 import Link from 'next/link';
+import { config } from 'process';
 
 interface FormProps {
     amount: number;
@@ -122,56 +123,56 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
         try {
 
             // Retrieve the token from local storage
-            const authToken = localStorage.getItem("token");
+            if (typeof window !== 'undefined' && window.localStorage) {
+                const authToken = localStorage.getItem("token");
 
-            // Check if the token is present
-            if (!authToken) {
-                // Handle the case where the token is not available
-                console.error("Authentication token not found");
-                return;
-            }
+                if (!authToken) {
+                    console.error("Authentication token not found");
+                    return;
+                }
 
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                },
-            };
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                };
 
-            const invoice = {
-                customerName: formData.customerName,
-                customerEmail: formData.email,
-                totalSalesAmount: Number(formData.amount),
-                dueDate: formData.date,
-                status: formData.status,
-                reminder: formData.reminder,
+                const invoice = {
+                    customerName: formData.customerName,
+                    customerEmail: formData.email,
+                    totalSalesAmount: Number(formData.amount),
+                    dueDate: formData.date,
+                    status: formData.status,
+                    reminder: formData.reminder,
 
-            }
+                }
 
-            // // console.log('Signup payload:', user);
-            setSend("Sending...");
+                // // console.log('Signup payload:', user);
+                setSend("Sending...");
 
-            const response = await axios.post(
-                "https://chase-lvga.onrender.com/api/invoices",
-                invoice,
-                config
-            );
+                const response = await axios.post(
+                    "https://chase-lvga.onrender.com/api/invoices",
+                    invoice,
+                    config
+                );
 
-            // Assuming the registration is successful, you can handle success logic here
-            if (response.status === 201) {
-                setErrorMessage(null);
-                const successMessage = "Saving successful";
-                toast.success(successMessage, {
-                    position: toast.POSITION.BOTTOM_LEFT,
-                });
-                setSuccess(true);
-                router.reload();
-            } else {
-                const errorMessage = "An error occurred, check your credentials and try again.";
-                setErrorMessage(errorMessage);
-                toast.error(errorMessage, {
-                    position: toast.POSITION.BOTTOM_LEFT,
-                });
-                clearErrorMessage()
+                // Assuming the registration is successful, you can handle success logic here
+                if (response.status === 201) {
+                    setErrorMessage(null);
+                    const successMessage = "Saving successful";
+                    toast.success(successMessage, {
+                        position: toast.POSITION.BOTTOM_LEFT,
+                    });
+                    setSuccess(true);
+                    router.reload();
+                } else {
+                    const errorMessage = "An error occurred, check your credentials and try again.";
+                    setErrorMessage(errorMessage);
+                    toast.error(errorMessage, {
+                        position: toast.POSITION.BOTTOM_LEFT,
+                    });
+                    clearErrorMessage()
+                }
             }
         } catch (error) {
             // Handle error if necessary

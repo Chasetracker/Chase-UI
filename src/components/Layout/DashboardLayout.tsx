@@ -18,8 +18,8 @@ import { CiLogout } from "react-icons/ci";
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const router = useRouter();
 
-    const username = localStorage.getItem("userBusinessName");
-    const email = localStorage.getItem("userEmail");
+    // const username = localStorage.getItem("userBusinessName");
+    // const email = localStorage.getItem("userEmail");
 
 
     const isLinkActive = (linkPath: string) => {
@@ -75,8 +75,8 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                         <PiBuildings />
                     </div>
                     <div className='flex flex-col w-[100px] '>
-                        <h1 className='font-bold text-base text-black'>{username}</h1>
-                        <h2 className='font-bold text-base'>{email}</h2>
+                        {/* <h1 className='font-bold text-base text-black'>{username}</h1>
+                        <h2 className='font-bold text-base'>{email}</h2> */}
                     </div>
                     <div className=' text-[30px]'>
                         <CiLogout />

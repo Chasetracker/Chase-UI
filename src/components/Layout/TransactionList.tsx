@@ -3,6 +3,7 @@ import { ImCancelCircle } from "react-icons/im";
 import { BsCopy } from "react-icons/bs";
 import Link from 'next/link';
 import axios from 'axios';
+import { config } from 'process';
 interface ApiResponse {
     totalSalesAmount: number;
     customerName: string;
@@ -22,21 +23,25 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
         // Fetch data using Axios when the component mounts
         const fetchData = async () => {
             try {
-                const authToken = localStorage.getItem("token");
+                if (typeof window !== 'undefined' && window.localStorage) {
+                    const authToken = localStorage.getItem("token");
 
-                if (!authToken) {
-                    console.error("Authentication token not found");
-                    return;
+                    if (!authToken) {
+                        console.error("Authentication token not found");
+                        return;
+                    }
+
+                    const config = {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    };
+
+
+                    const response = await axios.get('https://chase-lvga.onrender.com/api/get-invoices', config)
+                    console.log(response.data.InvoiceRecord);
+                    setTransactions(response.data.InvoiceRecord);
                 }
-
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${authToken}`,
-                    },
-                };
-                const response = await axios.get('https://chase-lvga.onrender.com/api/get-invoices', config)
-                console.log(response.data.InvoiceRecord);
-                setTransactions(response.data.InvoiceRecord); // Assuming your data is an array
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

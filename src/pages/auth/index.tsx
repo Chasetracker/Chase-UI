@@ -77,7 +77,10 @@ const Login: React.FC<FormProps> = () => {
             if (response.status === 200) {
                 setErrorMessage(null);
                 const token = response.data.token;
-                localStorage.setItem("token", token);
+                if (typeof window !== "undefined") {
+                    // Access localStorage here
+                    localStorage.setItem("token", token);
+                }
                 const successMessage = "Login successful";
                 toast.success(successMessage, {
                     position: toast.POSITION.BOTTOM_LEFT,
