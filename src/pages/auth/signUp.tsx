@@ -101,7 +101,6 @@ const SignUp: React.FC<FormProps> = () => {
                 const userBusinessName = response.data.user.business_name;
                 const userEmail = response.data.user.email;
                 if (typeof window !== "undefined") {
-                    // Access localStorage here
                     localStorage.setItem("userId", userId);
                     localStorage.setItem("userBusinessName", userBusinessName);
                     localStorage.setItem("userEmail", userEmail);

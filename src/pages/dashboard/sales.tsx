@@ -60,20 +60,23 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const authToken = localStorage.getItem("token");
-                if (!authToken) {
-                    console.error("Authentication token not found");
-                    return;
+
+                if (typeof window !== 'undefined' && window.localStorage) {
+                    const authToken = localStorage.getItem("token");
+
+                    if (!authToken) {
+                        console.error("Authentication token not found");
+                        return;
+                    }
+
+                    const config = {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    };
+                    const response = await axios.get('https://chase-lvga.onrender.com/api/customers', config)
+                    setCustomers(response.data.customers); // Assuming your data is an array
                 }
-
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${authToken}`,
-                    },
-                };
-
-                const response = await axios.get('https://chase-lvga.onrender.com/api/customers', config)
-                setCustomers(response.data.customers); // Assuming your data is an array
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
