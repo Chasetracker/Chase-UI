@@ -9,7 +9,7 @@ interface OTPInputProps {
 }
 
 const OTPInput: React.FC<OTPInputProps> = ({ initialLength }) => {
-    const [otp, setOtp] = useState(new Array(initialLength).fill(''));
+    const [otp, setOtp] = useState(''.padStart(initialLength, ''));
     const router = useRouter()
     const [verify, setVerify] = useState("Continue");
     const [success, setSuccess] = useState(false);
@@ -17,8 +17,10 @@ const OTPInput: React.FC<OTPInputProps> = ({ initialLength }) => {
 
     const handleInputChange = (index: number, value: string) => {
         const sanitizedValue = /^\d*$/.test(value) ? value : '';
-        const newOtp = [...otp];
+        const newOtp = otp.split('');
         newOtp[index] = sanitizedValue;
+
+        setOtp(newOtp.join(''));
 
         if (sanitizedValue && index < initialLength - 1) {
             const nextInput = document.getElementById(`otp-input-${index + 1}`);
@@ -26,12 +28,10 @@ const OTPInput: React.FC<OTPInputProps> = ({ initialLength }) => {
                 nextInput.focus();
             }
         }
-
-        setOtp(newOtp);
     };
 
     const isAllFieldsFilled = (): boolean => {
-        return otp.every((digit) => digit !== '');
+        return otp.length === initialLength;
     };
 
     const clearErrorMessage = () => {
@@ -85,13 +85,13 @@ const OTPInput: React.FC<OTPInputProps> = ({ initialLength }) => {
         <form onSubmit={onSubmit} className='flex flex-col justify-center items-center space-y-5'>
             <ToastContainer />
             <div className='space-x-2 flex'>
-                {otp.map((digit, index) => (
+                {Array.from({ length: initialLength }, (_, index) => (
                     <input
                         key={index}
                         id={`otp-input-${index}`}
                         type="text"
                         maxLength={1}
-                        value={digit}
+                        value={otp[index]}
                         onChange={(e: ChangeEvent<HTMLInputElement>) =>
                             handleInputChange(index, e.target.value)
                         }

@@ -21,41 +21,55 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
         return router.asPath === linkPath;
     };
     return (
-        <div className={`w-full h-[100vh] flex ${inter.className} `}>
-            <aside className='w-1/4 h-[100vh] shadow-xl flex sticky top-0 flex-col items-start z-[99999] bg-white overflow-y-auto shrink-0 basis-auto grow-0'>
+        <div className={`w-full h-[100vh] flex ${inter.className} overflow-hidden `}>
+            <aside className='w-1/4 h-[100vh] shadow-xl flex sticky top-0 flex-col items-start z-[99999] bg-white  shrink-0 basis-auto grow-0'>
                 <Link href='/' className='flex h-[50px] justify-center pt-12 pl-5 items-center space-x-2 mb-20'>
                     <div className='relative w-[40px] h-[45px]'>
                         <Image src='/svgs/logo.svg' alt='' fill />
                     </div>
                     <h1 className='text-[20px] font-extrabold text-[#314155]'>Chase</h1>
                 </Link>
+                <div className='overflow-y-auto'>
+                    <ul className='w-full flex flex-col space-y-3 mb-16 '>
+                        <Link href='/dashboard' className=''>
+                            <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
+                                <PiHouseSimpleLight className=' text-xl' />
+                                <h1 >Home</h1>
+                            </li>
+                        </Link>
+                        <Link href='/dashboard/sales' className=''>
+                            <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard/sales") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
+                                <BiReceipt className='text-xl rotate-180 ' />
+                                <h1 >Sales</h1>
+                            </li>
+                        </Link>
+                        <Link href='/dashboard/customers' className=''>
+                            <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard/customers") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
+                                <GoPeople className='text-[30px]' />
+                                <h1>Customers</h1>
+                            </li>
+                        </Link>
+                    </ul>
 
-                <ul className='w-full flex flex-col space-y-3 mb-16'>
-                    <Link href='/dashboard' className=''>
-                        <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
-                            <PiHouseSimpleLight className=' text-xl' />
-                            <h1 >Home</h1>
-                        </li>
+                    <Link href='#' className=' flex justify-center items-center  mx-auto'>
+                        <div className='relative w-[300px] h-[150px] '>
+                            <Image src='/svgs/card2.svg' alt='' fill />
+                        </div>
                     </Link>
-                    <Link href='/dashboard/sales' className=''>
-                        <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard/sales") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
-                            <BiReceipt className='text-xl rotate-180 ' />
-                            <h1 >Sales</h1>
-                        </li>
-                    </Link>
-                    <Link href='/dashboard/customers' className=''>
-                        <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard/customers") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
-                            <GoPeople className='text-[30px]' />
-                            <h1>Customers</h1>
-                        </li>
-                    </Link>
-                </ul>
 
-                <Link href='#' className=' flex justify-center items-center  mx-auto'>
-                    <div className='relative w-[300px] h-[150px] '>
-                        <Image src='/svgs/card2.svg' alt='' fill />
-                    </div>
-                </Link>
+                    {/* <Link href='#' className=''>
+                        <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center  hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard/settingd") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
+                            <RiSettingsLine className='text-[30px]' />
+                            <h1>Settings</h1>
+                        </li>
+                    </Link>
+                    <div className=''>
+                        <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center  hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard/settingd") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
+                            <RiSettingsLine className='text-[30px]' />
+                            <h1>Settings</h1>
+                        </li>
+                    </div> */}
+                </div>
 
             </aside>
 
@@ -75,7 +89,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                         </Link>
                     </div>
                 </nav>
-                <main className='p-10 mt-[75px] w-full h-full'>{children}</main>
+                <main className='p-10 mt-[75px] w-full h-full bg-[#FCFCFD]'>{children}</main>
             </div>
 
         </div>
