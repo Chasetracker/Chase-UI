@@ -215,8 +215,6 @@ const Customers: React.FC<FormProps> = () => {
                   required
                 />
               </div>
-
-
               <div className={`flex justify-between items-center w-full space-x-3`}>
                 <button
                   type="submit"
