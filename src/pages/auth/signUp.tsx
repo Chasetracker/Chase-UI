@@ -102,7 +102,7 @@ const SignUp: React.FC<FormProps> = () => {
                     position: toast.POSITION.BOTTOM_LEFT,
                 });
                 setSuccess(true);
-                router.push('/auth/emailVerification');
+                router.push('/auth');
             } else {
                 const errorMessage = "An error occurred, check your credentials and try again.";
                 setErrorMessage(errorMessage);

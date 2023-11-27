@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardLayout from '@/components/Layout/DashboardLayout'
 import axios from 'axios'
 import { useRouter } from 'next/router';
@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 //icons
 import { ImCancelCircle } from "react-icons/im";
-import { on } from 'events';
+import TransactionList from '@/components/Layout/TransactionList';
 
 interface FormProps {
     accountName: string;
@@ -38,7 +38,7 @@ const Home: React.FC<FormProps> = () => {
             [name]: value,
         }));
         if (name === 'accountNumber') {
-            const accountNumberPattern = /^[0-9]{10}$/;
+            const accountNumberPattern = /^\d+$/;
             if (value && !accountNumberPattern.test(value)) {
                 setFormData((prevData) => ({
                     ...prevData,
@@ -117,12 +117,13 @@ const Home: React.FC<FormProps> = () => {
         }
 
     }
+
     return (
         <>
             <DashboardLayout>
                 <ToastContainer />
-                <main className='relative w-full h-full '>
-                    <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[400px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? '' : 'hidden'}`}>
+                <main className={`relative  h-full`}>
+                    <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[400px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999] ' : 'hidden'}`}>
                         <div className='flex justify-between items-start w-full mb-3'>
                             <div>
                                 <h1 className='text-[20px] font-extrabold text-black'>Add your Account Details</h1>
@@ -155,6 +156,8 @@ const Home: React.FC<FormProps> = () => {
                                     value={formData.accountNumber}
                                     onChange={handleChange}
                                     required
+                                    maxLength={10}
+                                    minLength={10}
                                 />
                             </div>
                             <div className={`flex flex-col `}>
@@ -218,8 +221,8 @@ const Home: React.FC<FormProps> = () => {
                         <h2 className='text-[16px] font-light'>Track, manage and forecast your customers and orders.</h2>
                     </div>
 
-                    <section>
-                        <div className='w-full h-[70px] flex justify-between items-center'>
+                    <section className={`flex flex-col w-full space-y- ${isOpened ? ' opacity-[0.3]' : ''}`}>
+                        <div className='w-full h-[60px] flex justify-between items-center'>
                             <h1 className='text-lg font-extrabold text-black'>Transactions</h1>
                             <div className='w-[225px] flex justify-between items-center'>
                                 <button
@@ -236,12 +239,16 @@ const Home: React.FC<FormProps> = () => {
                                 </button>
                                 <button
                                     type="button"
-                                    className={`w-[75px] bg-white text-[#314155] p-2 text-[12px]  border-[1px] border-[#CCD5DF] rounded-r-md hover:bg-[#F8FAFB]  `}
+                                    className={`w-[80px] bg-white text-[#314155] p-2 text-[12px]  border-[1px] border-[#CCD5DF] rounded-r-md hover:bg-[#F8FAFB]  `}
                                 >
                                     This Month
                                 </button>
                             </div>
                         </div>
+                        <div className='w-full'>
+                            <TransactionList totalSalesAmount={0} customerName={''} status={''} transactionsPerPage={4} />
+                        </div>
+
                     </section>
 
 
