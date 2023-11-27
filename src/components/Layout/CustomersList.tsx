@@ -67,7 +67,7 @@ const CustomersList: React.FC<ApiResponse> = () => {
                             className="flex flex-col justify-between items-center px-3 h-[160px] text-base bg-white rounded-xl  p-3 border-[2px] border-[#EAECF0]"
                         >
                             <div className='relative w-[50px] h-[50px]'>
-                                <Image src='/Images/Avatar.png' alt="Picture of the author" fill />
+                                <Image src='/images/Avatar.png' alt="Picture of the author" fill />
                             </div>
                             <h1 className='font-bold text-sm'>{customer.name}</h1>
                             <h1 className='font-normal text-[#FF3500] text-base'>Customer</h1>
