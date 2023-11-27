@@ -30,7 +30,7 @@ const Home: React.FC<FormProps> = () => {
 
     const [isOpened, setIsOpened] = useState(false);
     const closeModal = () => setIsOpened(!isOpened);
-    const username = localStorage.getItem("userBusinessName");
+    // const username = localStorage.getItem("userBusinessName");
 
 
     useEffect(() => {
@@ -231,7 +231,7 @@ const Home: React.FC<FormProps> = () => {
                         </form>
                     </div>
                     <div className={`${isOpened ? 'opacity-[0.3]' : ''} flex flex-col`}>
-                        <h1 className='text-lg font-extrabold'>Welcome back, {username}</h1>
+                        <h1 className='text-lg font-extrabold'>Welcome back, </h1>
                         <h2 className='text-[16px] font-light'>Track, manage and forecast your customers and orders.</h2>
                     </div>
 
