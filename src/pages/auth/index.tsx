@@ -76,6 +76,8 @@ const Login: React.FC<FormProps> = () => {
             // Assuming the registration is successful, you can handle success logic here
             if (response.status === 200) {
                 setErrorMessage(null);
+                const token = response.data.token;
+                localStorage.setItem("token", token);
                 const successMessage = "Login successful";
                 toast.success(successMessage, {
                     position: toast.POSITION.BOTTOM_LEFT,

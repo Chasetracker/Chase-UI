@@ -30,7 +30,14 @@ const Customers: React.FC<FormProps> = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isOpened, setIsOpened] = useState(false);
-  const closeModal = () => setIsOpened(false);
+  const closeModal = () => {
+    setIsOpened(false);
+    setFormData({
+      email: "",
+      customerName: "",
+      phone: "",
+    });
+  }
   const openModal = () => setIsOpened(!isOpened);
 
   const handleChange = (e: any) => {
@@ -57,14 +64,25 @@ const Customers: React.FC<FormProps> = () => {
     event.preventDefault();
     try {
 
-      const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU1ZmE5YmE3MmM0MmMxN2IzZDc0M2M0IiwiZW1haWwiOiJvbnVvaGFjb2xsaW5zY2hpZHViZW1AZ21haWwuY29tIiwiaWF0IjoxNzAwOTAzMDM5fQ.NBvtCXTse6lYdtwQutHb-yqI3nXv4XWg-giNkkDO66M";
+
+
+      const authToken = localStorage.getItem("token");
+
+      // Check if the token is present
+      if (!authToken) {
+        // Handle the case where the token is not available
+        console.error("Authentication token not found");
+        return;
+      }
+
       const headers = {
         Authorization: `Bearer ${authToken}`,
       };
 
       const invoice = {
-        customerName: formData.customerName,
-        customerEmail: formData.email,
+        name: formData.customerName,
+        email: formData.email,
+        phoneNumber: formData.phone
 
 
       }
@@ -73,7 +91,7 @@ const Customers: React.FC<FormProps> = () => {
       setSend("Saving...");
 
       const response = await axios.post(
-        "https://chase-lvga.onrender.com/api/invoices",
+        "https://chase-lvga.onrender.com/api/add-customer",
         invoice,
         { headers }
       );
@@ -86,6 +104,7 @@ const Customers: React.FC<FormProps> = () => {
           position: toast.POSITION.BOTTOM_LEFT,
         });
         setSuccess(true);
+        router.reload();
       } else {
         const errorMessage = "An error occurred, check your credentials and try again.";
         setErrorMessage(errorMessage);
@@ -114,10 +133,12 @@ const Customers: React.FC<FormProps> = () => {
     }
 
   }
+
+
   return (
     <>
       <DashboardLayout>
-        <main className={`relative w-full h-full  `}>
+        <main className={`relative w-full h-full px-10 pt-10   `}>
           <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[400px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
             <div className='flex justify-between items-start w-full mb-3'>
               <div className='space-y-2'>
@@ -169,6 +190,8 @@ const Customers: React.FC<FormProps> = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
+                  maxLength={14}
+                  minLength={14}
                 />
               </div>
 
@@ -228,7 +251,7 @@ const Customers: React.FC<FormProps> = () => {
               </div>
             </div>
             <div className='w-full'>
-              <CustomersList business_name={''} email={''} phone={''} />
+              <CustomersList name={''} email={''} phoneNumber={''} />
             </div>
           </section>
         </main>

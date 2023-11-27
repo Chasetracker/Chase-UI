@@ -20,7 +20,7 @@ interface FormProps {
     status: string;
 }
 interface SelectProps {
-    business_name: string;
+    name: string;
     id: number;
 
     // Add other properties as needed
@@ -29,7 +29,7 @@ interface SelectProps {
 
 const Sales: React.FC<SelectProps & FormProps> = () => {
     const [formData, setFormData] = useState({
-        amount: 0,
+        amount: "",
         date: "",
         email: "",
         reminder: "",
@@ -41,7 +41,17 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isOpened, setIsOpened] = useState(false);
-    const closeModal = () => setIsOpened(false);
+    const closeModal = () => {
+        setIsOpened(false);
+        setFormData({
+            amount: "",
+            date: "",
+            email: "",
+            reminder: "",
+            customerName: "",
+            status: "pending",
+        });
+    }
     const openModal = () => setIsOpened(!isOpened);
     const [customers, setCustomers] = useState<SelectProps[]>([]);
 
@@ -49,10 +59,22 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const response = await axios.get('https://chase-lvga.onrender.com/api/user/getCustomers'); // Replace with your actual backend API endpoint
-                setCustomers(response.data.users);
+                const authToken = localStorage.getItem("token");
+                if (!authToken) {
+                    console.error("Authentication token not found");
+                    return;
+                }
+
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                };
+
+                const response = await axios.get('https://chase-lvga.onrender.com/api/customers', config)
+                setCustomers(response.data.customers); // Assuming your data is an array
             } catch (error) {
-                console.error('Error fetching customers:', error);
+                console.error('Error fetching data:', error);
             }
         };
 
@@ -99,9 +121,20 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
         event.preventDefault();
         try {
 
-            const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU1ZmE5YmE3MmM0MmMxN2IzZDc0M2M0IiwiZW1haWwiOiJvbnVvaGFjb2xsaW5zY2hpZHViZW1AZ21haWwuY29tIiwiaWF0IjoxNzAwOTAzMDM5fQ.NBvtCXTse6lYdtwQutHb-yqI3nXv4XWg-giNkkDO66M";
-            const headers = {
-                Authorization: `Bearer ${authToken}`,
+            // Retrieve the token from local storage
+            const authToken = localStorage.getItem("token");
+
+            // Check if the token is present
+            if (!authToken) {
+                // Handle the case where the token is not available
+                console.error("Authentication token not found");
+                return;
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                },
             };
 
             const invoice = {
@@ -120,7 +153,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
             const response = await axios.post(
                 "https://chase-lvga.onrender.com/api/invoices",
                 invoice,
-                { headers }
+                config
             );
 
             // Assuming the registration is successful, you can handle success logic here
@@ -131,6 +164,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
                     position: toast.POSITION.BOTTOM_LEFT,
                 });
                 setSuccess(true);
+                router.reload();
             } else {
                 const errorMessage = "An error occurred, check your credentials and try again.";
                 setErrorMessage(errorMessage);
@@ -151,7 +185,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
             // Reset the UI state
             setSend("Send Invoice");
             setFormData({
-                amount: 0,
+                amount: "",
                 date: "",
                 email: "",
                 reminder: "",
@@ -165,7 +199,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
     return (
         <>
             <DashboardLayout>
-                <main className={`relative w-full h-full  `}>
+                <main className={`relative w-full h-full px-10 pt-10  `}>
                     <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[460px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
                         <div className='flex justify-between items-start w-full mb-3'>
                             <div>
@@ -244,7 +278,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
                                     </option>
                                     {customers.map((customer) => (
                                         <option key={customer.id} value={customer.id}>
-                                            {customer.business_name}
+                                            {customer.name}
                                         </option>
                                     ))}
                                 </select>
