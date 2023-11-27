@@ -40,7 +40,7 @@ const Home: React.FC<FormProps> = () => {
 
             if (!authToken) {
                 // Redirect the user to the login page if there is no valid token
-                router.push('/login');
+                router.push('/auth');
             }
         }
     }, []);
