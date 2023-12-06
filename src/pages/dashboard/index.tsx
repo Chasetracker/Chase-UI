@@ -275,6 +275,7 @@ const Home: React.FC<FormProps> = () => {
                         <h1 className='text-lg font-extrabold'>Welcome back, {userInfo.business_name} </h1>
                         <h2 className='text-[16px] font-light'>Track, manage and forecast your customers and orders.</h2>
                     </div>
+
                     <div className='relative w-full h-1/4'>
                         <Image src='/images/Metric.png' alt='hero' fill />
                     </div>
