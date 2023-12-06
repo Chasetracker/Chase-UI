@@ -1,6 +1,6 @@
 import DashboardLayout from '@/components/Layout/DashboardLayout'
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
@@ -134,6 +134,31 @@ const Customers: React.FC<FormProps> = () => {
 
   }
 
+  useEffect(() => {
+    // Check if there is a valid token in local storage
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const authToken = localStorage.getItem("token");
+
+      if (!authToken) {
+        // Redirect the user to the login page if there is no valid token
+
+        router.push('/auth');
+      }
+    }
+  }, []);
+
+  // if (typeof window !== 'undefined' && window.localStorage) {
+  //   const authToken = localStorage.getItem("token");
+
+  //   if (!authToken) {
+  //     // Redirect the user to the login page if there is no valid token
+  //     return (
+  //       <>
+  //         <h1>Redirecting...</h1>
+  //       </>
+  //     )
+  //   }
+  // }
 
   return (
     <>

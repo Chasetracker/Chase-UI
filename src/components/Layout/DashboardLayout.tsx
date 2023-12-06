@@ -121,7 +121,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                     </Link>
 
                 </div>
-                <div className='w-full bottom-0 flex justify-start items-end'>
+                <div className='w-full bottom-0 flex justify-start items-end border-[1px] border-[#EAECF0] mt-2'>
                     <div className={`h-[70px]  flex  w-full space-x-3 px-6 py-2 font-extrabold items-center justify-between `}>
                         <div className='text-[30px] w-[50px] h-[50px] rounded-full bg-[#FFEAD5] flex justify-center items-center text-[#EC4A0A]'>
                             <PiBuildings />
