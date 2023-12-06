@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from "next/router";
@@ -14,12 +14,63 @@ import { BiReceipt } from "react-icons/bi";
 import { GoPeople } from "react-icons/go";
 import { TbReceipt } from "react-icons/tb";
 import { CiLogout } from "react-icons/ci";
+interface userProps {
+    email?: string;
+    business_name?: string;
+    _id?: string;
+
+}
 
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const router = useRouter();
+    const [userInfo, setUserInfo] = useState<{ email?: string; business_name?: string }>({});
 
-    // const username = localStorage.getItem("userBusinessName");
-    // const email = localStorage.getItem("userEmail");
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.localStorage) {
+            const getUserInfo = async () => {
+                const userString = localStorage.getItem('loggedInUser');
+
+                if (!userString) {
+                    console.error('User data not found in localStorage');
+                    return;
+                }
+
+
+                const user = JSON.parse(userString) as userProps;
+                // Ensure that the user object has the _id property
+                const userID = user._id;
+                if (!user || !user._id) {
+                    console.error('Invalid userId');
+                    return;
+                }
+                try {
+                    const username = user.business_name
+                    const email = user.email;
+
+                    setUserInfo({
+                        email: email || undefined,
+                        business_name: username || undefined,
+                    });
+
+                } catch (error) {
+                    console.error('Error fetching user details:', error);
+                }
+            };
+
+            getUserInfo();
+        }
+    }, []);
+
+    const handleLogout = () => {
+        if (typeof window !== 'undefined' && window.localStorage) {
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('token');
+            router.push('/');
+
+        }
+    };
+
+
 
 
     const isLinkActive = (linkPath: string) => {
@@ -34,7 +85,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                     </div>
                     <h1 className='text-[20px] font-extrabold text-[#314155]'>Chase</h1>
                 </Link>
-                <div className='overflow-y-auto'>
+                <div className='overflow-y-auto h-4/5 w-full'>
                     <ul className='w-full flex flex-col space-y-3 mb-16 '>
                         <Link href='/dashboard' className=''>
                             <li className={`h-[50px]  flex  w-full space-x-3 px-6 py-2 justify-start font-extrabold items-center hover:bg-[#b2a291] rounded-sm ${isLinkActive("/dashboard") ? "bg-[#FFE9D2] text-[#EC4A0A] " : "text-[#344054]"}`}>
@@ -56,7 +107,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                         </Link>
                     </ul>
 
-                    <Link href='#' className=' flex justify-center items-center  mx-auto mb-10'>
+                    <Link href='/dashboard/sales' className=' flex justify-start items-center w-full mx-auto mb-10'>
                         <div className='relative w-[300px] h-[150px] '>
                             <Image src='/svgs/card2.svg' alt='' fill />
                         </div>
@@ -70,16 +121,18 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                     </Link>
 
                 </div>
-                <div className={`h-[70px]  flex  w-full space-x-3 px-6 py-2 font-extrabold items-center justify-between hover:bg-[#b2a291] `}>
-                    <div className='text-[30px] w-[50px] h-[50px] rounded-full bg-[#FFEAD5] flex justify-center items-center text-[#EC4A0A]'>
-                        <PiBuildings />
-                    </div>
-                    <div className='flex flex-col w-[100px] '>
-                        {/* <h1 className='font-bold text-base text-black'>{username}</h1>
-                        <h2 className='font-bold text-base'>{email}</h2> */}
-                    </div>
-                    <div className=' text-[30px]'>
-                        <CiLogout />
+                <div className='w-full bottom-0 flex justify-start items-end'>
+                    <div className={`h-[70px]  flex  w-full space-x-3 px-6 py-2 font-extrabold items-center justify-between `}>
+                        <div className='text-[30px] w-[50px] h-[50px] rounded-full bg-[#FFEAD5] flex justify-center items-center text-[#EC4A0A]'>
+                            <PiBuildings />
+                        </div>
+                        <div className='flex flex-col w-2/4 justify-center items-center '>
+                            <h1 className='font-bold text-base text-black'>{userInfo.business_name}</h1>
+                            <h2 className='font-bold text-[10px]'>{userInfo.email}</h2>
+                        </div>
+                        <div className=' text-[30px] w-[40px] h-[50px] flex justify-center items-center rounded-md hover:bg-[#b2a291]' onClick={handleLogout}>
+                            <CiLogout />
+                        </div>
                     </div>
                 </div>
 

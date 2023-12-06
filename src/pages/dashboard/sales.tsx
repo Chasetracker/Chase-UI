@@ -23,6 +23,7 @@ interface FormProps {
 interface SelectProps {
     name: string;
     id: number;
+    email: string;
 
     // Add other properties as needed
 }
@@ -106,6 +107,27 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
                     error: '',
                 }));
             }
+        }
+
+        if (name === 'customerName') {
+            // Find the selected customer
+            const selectedCustomer = customers.find(customer => customer.name === value);
+            console.log(selectedCustomer);
+
+            // Update the state with the selected customer's email
+            if (selectedCustomer) {
+                setFormData(prevData => ({
+                    ...prevData,
+                    [name]: value,
+                    email: selectedCustomer.email,
+                }));
+            }
+        } else {
+            // For other fields, update the state as usual
+            setFormData(prevData => ({
+                ...prevData,
+                [name]: value,
+            }));
         }
 
     }
@@ -204,7 +226,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
         <>
             <DashboardLayout>
                 <main className={`relative w-full h-full px-10 pt-10  `}>
-                    <div className={`absolute flex flex-col justify-center items-center w-[400px] top-[15rem] left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[580px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
+                    <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[580px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
                         <div className='flex justify-between items-start w-full mb-3'>
                             <div>
                                 <h1 className='text-[20px] font-extrabold text-black'>Record New Sale</h1>
@@ -326,7 +348,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
                             </div>
                             <div className='bg-[#FFF5EC] flex flex-col space-y-2 rounded-md w-full p-4'>
                                 <div className='flex w-full justify-between'>
-                                    <h1>Acount Name</h1>
+                                    <h1>Account Name</h1>
                                     <h1>0233471679</h1>
                                 </div>
                                 <div className='flex w-full justify-between'>
