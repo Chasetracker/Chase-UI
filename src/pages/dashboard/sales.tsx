@@ -67,7 +67,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
 
                     if (!authToken) {
                         console.error("Authentication token not found");
-                        return;
+                        router.push('/auth');
                     }
 
                     const config = {
@@ -172,7 +172,6 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
 
                 }
 
-                // // console.log('Signup payload:', user);
                 setSend("Sending...");
 
                 const response = await axios.post(
@@ -222,11 +221,43 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
         }
 
     }
+
+    const renderEmailInput = () => {
+        if (formData.email) {
+            return (
+                <input
+                    type="email"
+                    placeholder="Enter customer email"
+                    id="email"
+                    name="email"
+                    className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
+                    value={formData.email}
+                    readOnly  // Add readOnly attribute
+                    required
+                />
+            );
+        } else {
+            return (
+                <input
+                    type="email"
+                    placeholder="Enter customer email"
+                    id="email"
+                    name="email"
+                    className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    readOnly
+                />
+            );
+        }
+    };
+
     return (
         <>
             <DashboardLayout>
                 <main className={`relative w-full h-full px-10 pt-10  `}>
-                    <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[580px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
+                    <div className={`absolute flex flex-col justify-center  items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[580px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
                         <div className='flex justify-between items-start w-full mb-3'>
                             <div>
                                 <h1 className='text-[20px] font-extrabold text-black'>Record New Sale</h1>
@@ -317,16 +348,7 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
                                 >
                                     Customer Email
                                 </label>
-                                <input
-                                    type="email"
-                                    placeholder="Enter customer email"
-                                    id="email"
-                                    name="email"
-                                    className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
-                                />
+                                {renderEmailInput()}
                             </div>
                             <div className={`flex flex-col `}>
                                 <label
@@ -335,16 +357,22 @@ const Sales: React.FC<SelectProps & FormProps> = () => {
                                 >
                                     Set Reminder
                                 </label>
-                                <input
-                                    type="text"
-                                    placeholder="Every 1 hour"
+                                <select
                                     id="reminder"
                                     name="reminder"
                                     className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
                                     value={formData.reminder}
-                                    onChange={handleChange}
                                     required
-                                />
+                                    onChange={handleChange}
+                                >
+                                    <option value="" disabled selected>Select reminder option </option>
+                                    <option>Every 10 minutes</option>
+                                    <option>Every 15 minutes</option>
+                                    <option>Every 30 minutes</option>
+                                    <option>Every 1 hour</option>
+                                    <option>Every 2 hours</option>
+                                    <option>Every 5 hours</option>
+                                </select>
                             </div>
                             <div className='bg-[#FFF5EC] flex flex-col space-y-2 rounded-md w-full p-4'>
                                 <div className='flex w-full justify-between'>
