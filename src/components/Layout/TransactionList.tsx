@@ -39,7 +39,6 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
 
 
                     const response = await axios.get('https://chase-lvga.onrender.com/api/get-invoices', config)
-                    console.log(response.data.InvoiceRecord);
                     setTransactions(response.data.InvoiceRecord);
                 }
             } catch (error) {

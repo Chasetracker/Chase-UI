@@ -16,6 +16,12 @@ interface FormProps {
     bankName: string;
 }
 
+interface userProps {
+    business_name?: string;
+    _id?: string;
+
+}
+
 
 const Home: React.FC<FormProps> = () => {
     const [formData, setFormData] = useState({
@@ -23,6 +29,8 @@ const Home: React.FC<FormProps> = () => {
         accountNumber: "",
         bankName: "",
     });
+    const [userInfo, setUserInfo] = useState<{ business_name?: string }>({});
+
 
     const [save, setSave] = useState("Save");
     const [success, setSuccess] = useState(false);
@@ -43,6 +51,37 @@ const Home: React.FC<FormProps> = () => {
                 // Redirect the user to the login page if there is no valid token
                 router.push('/auth');
             }
+        }
+        if (typeof window !== 'undefined' && window.localStorage) {
+            const getUserInfo = async () => {
+                const userString = localStorage.getItem('loggedInUser');
+
+                if (!userString) {
+                    console.error('User data not found in localStorage');
+                    return;
+                }
+
+
+                const user = JSON.parse(userString) as userProps;
+                // Ensure that the user object has the _id property
+                const userID = user._id;
+                if (!user || !user._id) {
+                    console.error('Invalid userId');
+                    return;
+                }
+                try {
+                    const username = user.business_name
+
+                    setUserInfo({
+                        business_name: username || undefined,
+                    });
+
+                } catch (error) {
+                    console.error('Error fetching user details:', error);
+                }
+            };
+
+            getUserInfo();
         }
     }, []);
 
@@ -233,11 +272,11 @@ const Home: React.FC<FormProps> = () => {
                         </form>
                     </div>
                     <div className={`${isOpened ? 'opacity-[0.3]' : ''} flex flex-col`}>
-                        <h1 className='text-lg font-extrabold'>Welcome back, GroceryHub</h1>
+                        <h1 className='text-lg font-extrabold'>Welcome back, {userInfo.business_name} </h1>
                         <h2 className='text-[16px] font-light'>Track, manage and forecast your customers and orders.</h2>
                     </div>
-                    <div className='relative w-full h-[150px]'>
-                        <Image src='/images/metric.png' alt='hero' fill />
+                    <div className='relative w-full h-1/4'>
+                        <Image src='/images/Metric.png' alt='hero' fill />
                     </div>
 
                     <section className={`flex flex-col w-full space-y- ${isOpened ? ' opacity-[0.3]' : ''}`}>
