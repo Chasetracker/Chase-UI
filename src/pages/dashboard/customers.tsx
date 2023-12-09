@@ -26,6 +26,7 @@ const Customers: React.FC<FormProps> = () => {
     phone: "",
   });
   const [send, setSend] = useState("Save");
+  const [token, setToken] = useState("")
   const [success, setSuccess] = useState(false);
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -138,6 +139,7 @@ const Customers: React.FC<FormProps> = () => {
     // Check if there is a valid token in local storage
     if (typeof window !== 'undefined' && window.localStorage) {
       const authToken = localStorage.getItem("token");
+      setToken(authToken ?? '')
 
       if (!authToken) {
         // Redirect the user to the login page if there is no valid token
@@ -147,139 +149,129 @@ const Customers: React.FC<FormProps> = () => {
     }
   }, []);
 
-  // if (typeof window !== 'undefined' && window.localStorage) {
-  //   const authToken = localStorage.getItem("token");
-
-  //   if (!authToken) {
-  //     // Redirect the user to the login page if there is no valid token
-  //     return (
-  //       <>
-  //         <h1>Redirecting...</h1>
-  //       </>
-  //     )
-  //   }
-  // }
-
   return (
     <>
-      <DashboardLayout>
-        <main className={`relative w-full h-full px-10 pt-10   `}>
-          <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[400px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
-            <div className='flex justify-between items-start w-full mb-3'>
-              <div className='space-y-2'>
-                <h1 className='text-[20px] font-extrabold text-black'>Add New Customer</h1>
-                <h2 className='text-[12px] text-[#667085]'>Yay! You have a new customer, record their details here</h2>
+      {!token ? <h1 className='p-4 text-2xl flex justify-center items-start text-[red]'>Redircting to login page!!!</h1> :
+        <DashboardLayout>
+          <main className={`relative w-full h-full px-10 pt-10   `}>
+            <div className={`absolute flex flex-col justify-center items-center w-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[400px] border-[0.5px]  border-[#667085] rounded-md bg-[#FFF] shadow-md p-3 ${isOpened ? 'z-[99999]' : 'hidden'}`}>
+              <div className='flex justify-between items-start w-full mb-3'>
+                <div className='space-y-2'>
+                  <h1 className='text-[20px] font-extrabold text-black'>Add New Customer</h1>
+                  <h2 className='text-[12px] text-[#667085]'>Yay! You have a new customer, record their details here</h2>
+                </div>
+                <div className='text-[20px] flex justify-center items-center mt-3 hover:text-[21px] cursor-pointer text-[#667085]'
+                  onClick={closeModal}>
+                  <ImCancelCircle />
+                </div>
               </div>
-              <div className='text-[20px] flex justify-center items-center mt-3 hover:text-[21px] cursor-pointer text-[#667085]'
-                onClick={closeModal}>
-                <ImCancelCircle />
-              </div>
+              <form onSubmit={onSubmit} className='w-full space-y-2'>
+                {errorMessage && (
+                  <p className="text-base font-medium text-[red]">
+                    {errorMessage}
+                  </p>
+                )}
+                <div className={`flex flex-col `}>
+                  <label
+                    htmlFor="customerName"
+                    className={`font-bold text-[12px] flex justify-between items-center text-[#314155] my-1`}
+                  >
+                    Customer Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter customer name"
+                    id="customerName"
+                    name="customerName"
+                    className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
+                    value={formData.customerName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className={`flex flex-col `}>
+                  <label
+                    htmlFor="phone"
+                    className={`font-bold text-[12px] text-[#314155] my-1`}
+                  >
+                    Customer Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="+234"
+                    id="phone"
+                    name="phone"
+                    className={`border-[#D0D5DD]     border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    maxLength={14}
+                    minLength={14}
+                  />
+                </div>
+
+
+
+                <div className={`flex flex-col `}>
+                  <label
+                    htmlFor="email"
+                    className={`font-bold text-[12px] text-[#314155] my-1`}
+                  >
+                    Customer Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Enter customer email"
+                    id="email"
+                    name="email"
+                    className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className={`flex justify-between items-center w-full space-x-3`}>
+                  <button
+                    type="submit"
+                    className={`w-3/4 bg-white text-[#314155] py-2 px-4 border-[1px] border-[#CCD5DF] rounded-md text-sm hover:bg-[red] hover:text-white`}
+                    onClick={closeModal}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className={`w-3/4 bg-[#FF3500] text-white py-2 px-4 rounded-md text-sm hover:bg-[#c46a53]  ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
+                    disabled={!isAllFieldsFilled()}
+                  >
+                    {send}
+                  </button>
+
+                </div>
+              </form>
             </div>
-            <form onSubmit={onSubmit} className='w-full space-y-2'>
-              {errorMessage && (
-                <p className="text-base font-medium text-[red]">
-                  {errorMessage}
-                </p>
-              )}
-              <div className={`flex flex-col `}>
-                <label
-                  htmlFor="customerName"
-                  className={`font-bold text-[12px] flex justify-between items-center text-[#314155] my-1`}
-                >
-                  Customer Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter customer name"
-                  id="customerName"
-                  name="customerName"
-                  className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
-                  value={formData.customerName}
-                  onChange={handleChange}
-                  required
-                />
+            <section className={`flex flex-col w-full h-full space-y-3 ${isOpened ? ' opacity-[0.3]' : ''}`}>
+              <div className='w-full  flex  justify-between  items-center top-0'>
+                <h1 className='text-lg font-extrabold text-black w-1/6'>Customers</h1>
+                <div>
+                  <button
+                    type="button"
+                    className={`w-[180px] h-[45px] bg-[#EC4A0A] text-white p-2 text-[13px] flex justify-center items-center space-x-2 border-[1px] border-[#CCD5DF] rounded-lg hover:bg-[#cd8568]  `}
+                    onClick={openModal}
+                  >
+                    <GoPlus className='text-lg' />
+                    <h1>Add a Customer</h1>
+                  </button>
+                </div>
               </div>
-              <div className={`flex flex-col `}>
-                <label
-                  htmlFor="phone"
-                  className={`font-bold text-[12px] text-[#314155] my-1`}
-                >
-                  Customer Phone Number
-                </label>
-                <input
-                  type="text"
-                  placeholder="+234"
-                  id="phone"
-                  name="phone"
-                  className={`border-[#D0D5DD]     border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  maxLength={14}
-                  minLength={14}
-                />
+              <div className='w-full'>
+                <CustomersList name={''} email={''} phoneNumber={''} />
               </div>
-
-
-
-              <div className={`flex flex-col `}>
-                <label
-                  htmlFor="email"
-                  className={`font-bold text-[12px] text-[#314155] my-1`}
-                >
-                  Customer Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="Enter customer email"
-                  id="email"
-                  name="email"
-                  className={`border-[#D0D5DD] border-[1px] text-base text-[#445568] font-normal p-3 rounded-md w-full`}
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className={`flex justify-between items-center w-full space-x-3`}>
-                <button
-                  type="submit"
-                  className={`w-3/4 bg-white text-[#314155] py-2 px-4 border-[1px] border-[#CCD5DF] rounded-md text-sm hover:bg-[red] hover:text-white`}
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className={`w-3/4 bg-[#FF3500] text-white py-2 px-4 rounded-md text-sm hover:bg-[#c46a53]  ${isAllFieldsFilled() ? '' : 'cursor-not-allowed opacity-50'}`}
-                  disabled={!isAllFieldsFilled()}
-                >
-                  {send}
-                </button>
-
-              </div>
-            </form>
-          </div>
-          <section className={`flex flex-col w-full h-full space-y-3 ${isOpened ? ' opacity-[0.3]' : ''}`}>
-            <div className='w-full  flex  justify-between  items-center top-0'>
-              <h1 className='text-lg font-extrabold text-black w-1/6'>Customers</h1>
-              <div>
-                <button
-                  type="button"
-                  className={`w-[180px] h-[45px] bg-[#EC4A0A] text-white p-2 text-[13px] flex justify-center items-center space-x-2 border-[1px] border-[#CCD5DF] rounded-lg hover:bg-[#cd8568]  `}
-                  onClick={openModal}
-                >
-                  <GoPlus className='text-lg' />
-                  <h1>Add a Customer</h1>
-                </button>
-              </div>
-            </div>
-            <div className='w-full'>
-              <CustomersList name={''} email={''} phoneNumber={''} />
-            </div>
-          </section>
-        </main>
-      </DashboardLayout>
+            </section>
+          </main>
+        </DashboardLayout>
+      }
     </>
+
   )
 }
 

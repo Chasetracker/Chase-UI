@@ -64,7 +64,7 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
     );
     return (
         <div className='w-full flex flex-col justify-between'>
-            <table className='w-full h-5/6'>
+            <table className='w-full h-5/6 top-0'>
                 <thead className='w-full bg-[#F8FAFB] h-[50px] rounded-t-md flex border-b-[2px] border-[#EAECF0]'>
                     <tr className='w-full flex justify-between items-center text-[#7B7B7B] text-light text-[12px]  px-3 '>
                         <th className='w-[20px]  flex justify-start items-center'><input type="checkbox" /></th>
@@ -114,8 +114,9 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
                 </tbody>
             </table>
 
-            <div className='h-1/6 w-full absolute   bottom-0'>
-                <div className='w-[92%] flex justify-between items-center p-3  h-3/4  border-[#EAECF0] border-t-[1px]'>
+
+            <div className='h-[100px] w-full absolute  flex  items-center bottom-0'>
+                <div className='w-[92%] flex justify-between items-center px-3  h-3/4  border-[#EAECF0] border-t-[1px]'>
                     <p className='text-[#7B7B7B] flex justify-start font-bold text-[15px] w-1/5'>Page {currentPage} of {totalPages}</p>
                     <div className='w-4/5 flex justify-end space-x-3'>
                         <button
@@ -137,8 +138,6 @@ const TransactionList: React.FC<TransactionListProps & ApiResponse> = ({ transac
                     </div>
                 </div>
             </div>
-
-
         </div >
     )
 }
